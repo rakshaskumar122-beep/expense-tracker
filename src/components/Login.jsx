@@ -66,23 +66,31 @@ export default function Login() {
           <TextField fullWidth label="Password (min 6 characters)" type="password"
             value={password} onChange={(e) => setPassword(e.target.value)}
             sx={{ mb: 2 }} required />
-          <Button fullWidth type="submit" variant="contained" size="large">
-            {isSignUp ? "Sign Up" : "Log In"}
-          </Button>
+          <Button fullWidth type="submit" variant="contained" size="large"
+  sx={{ bgcolor: "#556b2f", color: "#ffffff", "&:hover": { bgcolor: "#445726" } }}>
+  {isSignUp ? "Sign Up" : "Log In"}
+</Button>
         </form>
 
-        <Divider sx={{ my: 2 }}>or</Divider>
-        <Button fullWidth variant="outlined" sx={{ mt: 2, bgcolor: "#181715", color: "#080707", "&:hover": {bgcolor: "#a98d2f"} }}
-            onClick={handleGoogle}>
-            Continue with Google
+                <Divider sx={{ my: 2 }}>or</Divider>
+
+        <Button fullWidth variant="contained"
+          sx={{ bgcolor: "#ffffff", color: "#3d4a1a", border: "1px solid #3d4a1a",
+            "&:hover": { bgcolor: "#f3f5e8" } }}
+          onClick={handleGoogle}>
+          Continue with Google
         </Button>
 
-        <Button fullWidth variant="contained" sx={{ mt: 2, bgcolor: "#ded9d0", color: "#e4d9d9", "&:hover": { bgcolor: "#a98d2f"}}} 
-        onClick={() => setIsSignUp(!isSignUp)}>
+        <Button fullWidth variant="text" sx={{ mt: 1, color: "#3d4a1a" }}
+          onClick={handleReset}>
+          Forgot password?
+        </Button>
+
+        <Button fullWidth variant="contained"
+          sx={{ mt: 2, bgcolor: "#c0a23d", color: "#222222",
+            "&:hover": { bgcolor: "#a98d2f" } }}
+          onClick={() => setIsSignUp(!isSignUp)}>
           {isSignUp ? "Already have an account? Log in" : "New here? Sign up"}
-             <Button fullWidth size="small" sx={{ mt: 1 }} onClick={handleReset}>
-     Forgot password?
-   </Button>
         </Button>
       </Paper>
     </Box>
