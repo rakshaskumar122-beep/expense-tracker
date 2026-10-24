@@ -5,12 +5,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth, googleProvider } from "../firebase";
-import {
-     onAuthStateChanged, signOut, createUserWithEmailAndPassword,
-     signInWithEmailAndPassword, signInWithPopup, sendPasswordResetEmail,
-   } from "firebase/auth";
 
 export const AuthContext = createContext();
 
