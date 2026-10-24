@@ -51,7 +51,7 @@ export default function Login() {
       }}
     >
       <Paper sx={{ p: 4, width: "100%", maxWidth: 380 }} elevation={6}>
-        <Typography variant="h4" align="center"  fontWeight="bold" sx={{color: "#3d4a1a"}}>
+        <Typography variant="h4" align="center"  fontWeight="bold" sx={{color: "#0e0e0b"}}>
           💰 Expense Tracker
         </Typography>
         <Typography align="center" color="text.secondary" sx={{ mb: 3 }}>
@@ -72,12 +72,12 @@ export default function Login() {
         </form>
 
         <Divider sx={{ my: 2 }}>or</Divider>
-        <Button fullWidth variant="outlined" sx={{ mt: 2, bgcolor: "#181715", color: "#222", "&:hover": {bgcolor: "#a98d2f"} }}
+        <Button fullWidth variant="outlined" sx={{ mt: 2, bgcolor: "#181715", color: "#080707", "&:hover": {bgcolor: "#a98d2f"} }}
             onClick={handleGoogle}>
             Continue with Google
         </Button>
 
-        <Button fullWidth variant="contained" sx={{ mt: 2, bgcolor: "#21211f", color: "#222", "&:hover": { bgcolor: "#a98d2f"}}} 
+        <Button fullWidth variant="contained" sx={{ mt: 2, bgcolor: "#181715", color: "#080707", "&:hover": { bgcolor: "#a98d2f"}}} 
         onClick={() => setIsSignUp(!isSignUp)}>
           {isSignUp ? "Already have an account? Log in" : "New here? Sign up"}
              <Button fullWidth size="small" sx={{ mt: 1 }} onClick={handleReset}>
