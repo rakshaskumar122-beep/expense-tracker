@@ -77,7 +77,7 @@ export default function Login() {
             Continue with Google
         </Button>
 
-        <Button fullWidth variant="contained" sx={{ mt: 2, bgcolor: "#181715", color: "#080707", "&:hover": { bgcolor: "#a98d2f"}}} 
+        <Button fullWidth variant="contained" sx={{ mt: 2, bgcolor: "#ded9d0", color: "#e4d9d9", "&:hover": { bgcolor: "#a98d2f"}}} 
         onClick={() => setIsSignUp(!isSignUp)}>
           {isSignUp ? "Already have an account? Log in" : "New here? Sign up"}
              <Button fullWidth size="small" sx={{ mt: 1 }} onClick={handleReset}>
