@@ -57,8 +57,12 @@ export default function VoiceInput() {
   }, [listening]);
 
   if (!browserSupportsSpeechRecognition) {
-    return <Typography>Voice need Chromeor Edge.Please open this link in Chrome.</Typography>;
-  }
+  return (
+    <Alert severity="info" sx={{ mb: 2 }}>
+      Voice needs Chrome or Edge. Please open this link in Chrome.
+    </Alert>
+  );
+}
 
   return (
     <Paper sx={{ p: 2, mb: 2, textAlign: "center" }}>
