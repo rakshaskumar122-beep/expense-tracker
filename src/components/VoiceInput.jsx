@@ -57,7 +57,7 @@ export default function VoiceInput() {
   }, [listening]);
 
   if (!browserSupportsSpeechRecognition) {
-    return <Typography>Voice input is not supported in this browser. Use Chrome.</Typography>;
+    return <Typography>Voice need Chromeor Edge.Please open this link in Chrome.</Typography>;
   }
 
   return (
