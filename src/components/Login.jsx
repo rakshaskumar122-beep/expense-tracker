@@ -3,7 +3,7 @@ import { Box, Paper, Typography, TextField, Button, Alert, Divider } from "@mui/
 import { AuthContext } from "../context/AuthContext";
 
 export default function Login() {
-  const { signUp, logIn, googleLogin } = useContext(AuthContext);
+  const { signUp, logIn, googleLogin, resetPassword } = useContext(AuthContext);
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,6 +28,16 @@ export default function Login() {
       setError("Google sign-in failed");
     }
   };
+
+     const handleReset = async () => {
+     if (!email) return setError("Type your email first, then tap Forgot password");
+     try {
+       await resetPassword(email);
+       setError("Reset link sent. Check your email (and spam folder).");
+     } catch (err) {
+       setError("Could not send reset email");
+     }
+   };
 
   return (
     <Box
@@ -68,6 +78,9 @@ export default function Login() {
 
         <Button fullWidth sx={{ mt: 2 }} onClick={() => setIsSignUp(!isSignUp)}>
           {isSignUp ? "Already have an account? Log in" : "New here? Sign up"}
+             <Button fullWidth size="small" sx={{ mt: 1 }} onClick={handleReset}>
+     Forgot password?
+   </Button>
         </Button>
       </Paper>
     </Box>
