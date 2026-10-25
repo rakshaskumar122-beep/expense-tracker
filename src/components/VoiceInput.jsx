@@ -14,6 +14,7 @@ export default function VoiceInput() {
   const [msg, setMsg] = useState(null);
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
+    const [started, setStarted] = useState(false);
 
   useEffect(() => {
     if (listening || !transcript) return;
@@ -78,18 +79,21 @@ export default function VoiceInput() {
           color={listening ? "error" : "primary"}
           startIcon={<MicIcon />}
           onClick={() => {
-            setMsg(null);
-            listening
-              ? SpeechRecognition.stopListening()
-              : SpeechRecognition.startListening({ language: lang });
-          }}
+  setMsg(null);
+  if (listening) {
+    SpeechRecognition.stopListening();
+  } else {
+    resetTranscript();
+    SpeechRecognition.startListening({ language: lang, continuous: false });
+  }
+}}
         >
           {listening ? "Stop" : "Speak"}
         </Button>
       </Box>
 
       <Typography sx={{ mt: 1 }} color="text.secondary">
-        {listening ? transcript || "Listening..." : 'Try: "food 500", "salary 5000", "set food budget 1000"'}
+        {listening ? transcript || "Listening... speak now, then pause" : 'Try: "food 500", "salary 5000", "set food budget 1000"'}
       </Typography>
 
       {msg && <Alert severity={msg.severity} sx={{ mt: 1, textAlign: "left" }}>{msg.text}</Alert>}
