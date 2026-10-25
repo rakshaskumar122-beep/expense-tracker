@@ -12,19 +12,16 @@ export default function VoiceInput() {
   const { addTransaction, setBudget } = useContext(TransactionContext);
   const [lang, setLang] = useState("en-IN");
   const [msg, setMsg] = useState(null);
+  const [typed, setTyped] = useState("");
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
-    const [started, setStarted] = useState(false);
 
-  useEffect(() => {
-    if (listening || !transcript) return;
-
-    const text = transcript.toLowerCase();
+  const processText = (raw) => {
+    const text = raw.toLowerCase();
     const amount = extractNumber(text);
 
     if (!amount) {
-      setMsg({ severity: "warning", text: `Heard: "${transcript}" - I couldn't find an amount. Say the number, like 500.` });
-      resetTranscript();
+      setMsg({ severity: "warning", text: `Heard: "${raw}" - I couldn't find an amount. Say the number, like 500.` });
       return;
     }
 
@@ -35,10 +32,10 @@ export default function VoiceInput() {
 
     if (isBudget) {
       if (!category || category === "Other") {
-        setMsg({ severity: "warning", text: `Heard: "${transcript}" - which category is the budget for? Try "set food budget 1000".` });
+        setMsg({ severity: "warning", text: `Heard: "${raw}" - which category is the budget for? Try "set food budget 1000".` });
       } else {
         setBudget(category, Number(amount));
-        setMsg({ severity: "success", text: `Budget set: ${category} = ₹${amount} (heard: "${transcript}")` });
+        setMsg({ severity: "success", text: `Budget set: ${category} = ₹${amount} (heard: "${raw}")` });
       }
     } else {
       const finalCategory = category || "Other";
@@ -51,50 +48,67 @@ export default function VoiceInput() {
       });
       setMsg({
         severity: "success",
-        text: `Added ${isIncome ? "income" : "expense"}: ${finalCategory} ₹${amount} (heard: "${transcript}")`,
+        text: `Added ${isIncome ? "income" : "expense"}: ${finalCategory} ₹${amount} (heard: "${raw}")`,
       });
     }
+  };
+
+  useEffect(() => {
+    if (listening || !transcript) return;
+    processText(transcript);
     resetTranscript();
   }, [listening]);
 
-  if (!browserSupportsSpeechRecognition) {
-  return (
-    <Alert severity="info" sx={{ mb: 2 }}>
-      Voice needs Chrome or Edge. Please open this link in Chrome.
-    </Alert>
-  );
-}
+  const submitTyped = () => {
+    if (!typed.trim()) return;
+    processText(typed);
+    setTyped("");
+  };
 
   return (
     <Paper sx={{ p: 2, mb: 2, textAlign: "center" }}>
-      <Box sx={{ display: "flex", gap: 1, justifyContent: "center", alignItems: "center" }}>
-        <TextField select size="small" value={lang} disabled={listening}
-          onChange={(e) => setLang(e.target.value)} sx={{ minWidth: 120 }}>
-          {languages.map((l) => (
-            <MenuItem key={l.code} value={l.code}>{l.label}</MenuItem>
-          ))}
-        </TextField>
-        <Button
-          variant="contained"
-          color={listening ? "error" : "primary"}
-          startIcon={<MicIcon />}
-          onClick={() => {
-  setMsg(null);
-  if (listening) {
-    SpeechRecognition.stopListening();
-  } else {
-    resetTranscript();
-    SpeechRecognition.startListening({ language: lang, continuous: false });
-  }
-}}
-        >
-          {listening ? "Stop" : "Speak"}
-        </Button>
-      </Box>
+      {browserSupportsSpeechRecognition && (
+        <>
+          <Box sx={{ display: "flex", gap: 1, justifyContent: "center", alignItems: "center" }}>
+            <TextField select size="small" value={lang} disabled={listening}
+              onChange={(e) => setLang(e.target.value)} sx={{ minWidth: 120 }}>
+              {languages.map((l) => (
+                <MenuItem key={l.code} value={l.code}>{l.label}</MenuItem>
+              ))}
+            </TextField>
+            <Button
+              variant="contained"
+              color={listening ? "error" : "primary"}
+              startIcon={<MicIcon />}
+              onClick={() => {
+                setMsg(null);
+                if (listening) {
+                  SpeechRecognition.stopListening();
+                } else {
+                  resetTranscript();
+                  SpeechRecognition.startListening({ language: lang, continuous: false });
+                }
+              }}
+            >
+              {listening ? "Stop" : "Speak"}
+            </Button>
+          </Box>
+          <Typography sx={{ mt: 1 }} color="text.secondary">
+            {listening ? transcript || "Listening... speak now, then pause" : 'Try: "food 500", "salary 5000", "set food budget 1000"'}
+          </Typography>
+        </>
+      )}
 
-      <Typography sx={{ mt: 1 }} color="text.secondary">
-        {listening ? transcript || "Listening... speak now, then pause" : 'Try: "food 500", "salary 5000", "set food budget 1000"'}
+      <Typography sx={{ mt: 2 }} variant="body2" color="text.secondary">
+        Phone not hearing you? Tap the box, then the 🎤 on your keyboard.
       </Typography>
+      <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
+        <TextField fullWidth size="small" value={typed}
+          placeholder='e.g. "food 500"'
+          onChange={(e) => setTyped(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && submitTyped()} />
+        <Button variant="contained" onClick={submitTyped}>Add</Button>
+      </Box>
 
       {msg && <Alert severity={msg.severity} sx={{ mt: 1, textAlign: "left" }}>{msg.text}</Alert>}
     </Paper>
