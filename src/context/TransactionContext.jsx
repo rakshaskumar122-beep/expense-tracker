@@ -67,7 +67,11 @@ export const Provider = ({ children, userId }) => {
       collection(db, "users", userId, "transactions"),
       (snap) => {
         const list = snap.docs.map((d) => d.data());
-        list.sort((a, b) => sortKey(b) - sortKey(a));
+               list.sort(
+          (a, b) =>
+            (b.date || "").localeCompare(a.date || "") ||
+            (b.createdAt || 0) - (a.createdAt || 0)
+        );
         setTransactions(list);
         setLoading(false);
       },

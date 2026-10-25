@@ -7,6 +7,7 @@ import { TransactionContext } from "../context/TransactionContext";
 import { incomeCategories, expenseCategories } from "../constants/categories";
 import { languages, budgetWords, incomeWords, keywords } from "../constants/voice";
 import { extractNumber } from "../constants/numbers";
+import { parseDate } from "../constants/dateParse";
 
 export default function VoiceInput() {
   const { addTransaction, setBudget } = useContext(TransactionContext);
@@ -17,7 +18,8 @@ export default function VoiceInput() {
     useSpeechRecognition();
 
   const processText = (raw) => {
-    const text = raw.toLowerCase();
+            const { date, rest } = parseDate(raw);
+    const text = rest;
     const amount = extractNumber(text);
 
     if (!amount) {
@@ -44,11 +46,11 @@ export default function VoiceInput() {
         type: isIncome ? "Income" : "Expense",
         category: finalCategory,
         amount: Number(amount),
-        date: new Date().toISOString().slice(0, 10),
+                       date,
       });
       setMsg({
         severity: "success",
-        text: `Added ${isIncome ? "income" : "expense"}: ${finalCategory} ₹${amount} (heard: "${raw}")`,
+        text: `Added ${isIncome ? "income" : "expense"}: ${finalCategory} ₹${amount} on ${date} (heard: "${raw}")`,
       });
     }
   };
