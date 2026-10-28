@@ -11,11 +11,17 @@ export const budgetWords = [
 ];
 
 export const incomeWords = [
-  "income", "salary", "earned", "received",
-  "आय", "सैलरी", "वेतन", "कमाई",
-  "ಆದಾಯ", "ಸಂಬಳ",
-  "ఆదాయం", "జీతం",
-  "வருமானம்", "சம்பளம்",
+  // English
+  "income", "salary", "earned", "received", "profit", "gained", "sold", "selling",
+  "sale", "sales", "bonus", "refund", "cashback", "credited", "commission",
+  // Hindi
+  "आय", "सैलरी", "वेतन", "कमाई", "कमाया", "कमाए", "मुनाफा", "मुनाफ़ा", "लाभ", "बेचा", "बेचकर", "बिक्री",
+  // Kannada
+  "ಆದಾಯ", "ಸಂಬಳ", "ಗಳಿಸಿ", "ಲಾಭ", "ಮಾರಾಟ", "ಮಾರಿದ",
+  // Telugu
+  "ఆదాయం", "జీతం", "సంపాదించ", "లాభం", "అమ్మకం", "అమ్మి",
+  // Tamil
+  "வருமானம்", "சம்பளம்", "சம்பாதித்", "லாபம்", "விற்பனை", "விற்று",
 ];
 
 export const keywords = {
