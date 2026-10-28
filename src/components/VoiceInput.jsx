@@ -7,7 +7,7 @@ import { TransactionContext } from "../context/TransactionContext";
 import { LanguageContext } from "../context/LanguageContext";
 import { incomeCategories, expenseCategories } from "../constants/categories";
 import { languages, budgetWords, incomeWords, keywords } from "../constants/voice";
-import { extractNumber } from "../constants/numbers";
+import { extractNumber, removeNumber } from "../constants/numbers";
 import { parseDate } from "../constants/dateParse";
 
 export default function VoiceInput() {
@@ -45,7 +45,7 @@ export default function VoiceInput() {
         });
       }
     } else {
-      const finalCategory = category || "Other";
+      const finalCategory = category || makeLabel(text);
       addTransaction({
         id: uuidv4(),
         type: isIncome ? "Income" : "Expense",
@@ -65,6 +65,18 @@ export default function VoiceInput() {
       });
     }
   };
+  const FILLER = ["rupees", "rupee", "rs", "inr", "₹", "for", "on", "spent", "paid", "of", "in", "the", "a", "add"];
+
+// Turns what the person said into a category name, e.g. "movie 500" -> "Movie"
+const makeLabel = (text) => {
+  const skip = [...FILLER, ...incomeWords, ...budgetWords];
+  const words = removeNumber(text)
+    .split(" ")
+    .filter((w) => w && !skip.includes(w));
+  if (words.length === 0) return "Other";
+  const label = words.join(" ").slice(0, 30);
+  return label.charAt(0).toUpperCase() + label.slice(1);
+};
 
   useEffect(() => {
     if (listening || !transcript) return;

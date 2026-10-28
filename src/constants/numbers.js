@@ -126,3 +126,23 @@ export function extractNumber(input) {
   const result = total + current;
   return started && result > 0 ? result : null;
 }
+// Returns the text with the first number (digits or number words) removed
+export function removeNumber(input) {
+  const text = normalizeDigits(input.toLowerCase()).replace(/(\d),(\d)/g, "$1$2");
+  const tokens = text.split(/[\s,:;!?]+/).filter(Boolean);
+
+  const kept = [];
+  let started = false;
+  let finished = false;
+
+  for (const tok of tokens) {
+    const isNum = /^\d+$/.test(tok) || small.has(tok) || mult.has(tok);
+    if (isNum && !finished) {
+      started = true;
+      continue;
+    }
+    if (started) finished = true;
+    kept.push(tok);
+  }
+  return kept.join(" ");
+}
