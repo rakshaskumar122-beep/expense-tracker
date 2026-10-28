@@ -43,11 +43,15 @@ export default function App() {
         <Tabs
           value={page}
           onChange={(_, v) => setPage(v)}
-          centered
+          variant="scrollable"
+          scrollButtons="auto"
+          allowScrollButtonsMobile
           textColor="inherit"
           sx={{ "& .MuiTabs-indicator": { backgroundColor: "#ffffff" } }}
         >
           <Tab label={t("tab.home")} value="home" />
+          <Tab label={t("tab.budgets")} value="budgets" />
+          <Tab label={t("tab.transactions")} value="transactions" />
           <Tab label={t("tab.charts")} value="charts" />
         </Tabs>
       </AppBar>
@@ -77,40 +81,43 @@ export default function App() {
             </Paper>
 
             <VoiceInput key={language} />
-            <Budget />
             <Form />
-
-            <Paper>
-              <List>
-                {transactions.length === 0 && (
-                  <ListItem>
-                    <ListItemText primary={t("tx.none")} />
-                  </ListItem>
-                )}
-                {transactions.map((tx) => {
-                  const isIncome = tx.type === "Income";
-                  return (
-                    <ListItem
-                      key={tx.id}
-                      sx={{ borderLeft: 5, borderColor: isIncome ? "success.main" : "error.main" }}
-                      secondaryAction={
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                          <Typography fontWeight="bold" color={isIncome ? "success.main" : "error.main"}>
-                            {isIncome ? "+" : "-"}₹{tx.amount}
-                          </Typography>
-                          <IconButton onClick={() => deleteTransaction(tx.id)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </Box>
-                      }
-                    >
-                      <ListItemText primary={tc(tx.category)} secondary={tx.date} />
-                    </ListItem>
-                  );
-                })}
-              </List>
-            </Paper>
           </>
+        )}
+
+        {page === "budgets" && <Budget />}
+
+        {page === "transactions" && (
+          <Paper>
+            <List>
+              {transactions.length === 0 && (
+                <ListItem>
+                  <ListItemText primary={t("tx.none")} />
+                </ListItem>
+              )}
+              {transactions.map((tx) => {
+                const isIncome = tx.type === "Income";
+                return (
+                  <ListItem
+                    key={tx.id}
+                    sx={{ borderLeft: 5, borderColor: isIncome ? "success.main" : "error.main" }}
+                    secondaryAction={
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <Typography fontWeight="bold" color={isIncome ? "success.main" : "error.main"}>
+                          {isIncome ? "+" : "-"}₹{tx.amount}
+                        </Typography>
+                        <IconButton onClick={() => deleteTransaction(tx.id)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Box>
+                    }
+                  >
+                    <ListItemText primary={tc(tx.category)} secondary={tx.date} />
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Paper>
         )}
 
         {page === "charts" && (

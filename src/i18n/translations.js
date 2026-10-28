@@ -8,6 +8,8 @@ export const LANGUAGES = [
 
 export const translations = {
   en: {
+        "tab.budgets": "Budgets",
+    "tab.transactions": "Transactions",
     "app.title": "Expense Tracker",
     "logout": "Logout",
     "tab.home": "Home",
@@ -59,6 +61,8 @@ export const translations = {
   },
 
   hi: {
+        "tab.budgets": "बजट",
+    "tab.transactions": "लेन-देन",
     "app.title": "खर्च ट्रैकर",
     "logout": "लॉगआउट",
     "tab.home": "होम",
@@ -110,6 +114,8 @@ export const translations = {
   },
 
   kn: {
+        "tab.budgets": "ಬಜೆಟ್",
+    "tab.transactions": "ವಹಿವಾಟುಗಳು",
     "app.title": "ಖರ್ಚು ಟ್ರ್ಯಾಕರ್",
     "logout": "ಲಾಗ್ ಔಟ್",
     "tab.home": "ಮುಖಪುಟ",
@@ -161,6 +167,8 @@ export const translations = {
   },
 
   te: {
+        "tab.budgets": "బడ్జెట్",
+    "tab.transactions": "లావాదేవీలు",
     "app.title": "ఖర్చుల ట్రాకర్",
     "logout": "లాగ్ అవుట్",
     "tab.home": "హోమ్",
@@ -212,6 +220,8 @@ export const translations = {
   },
 
   ta: {
+        "tab.budgets": "பட்ஜெட்",
+    "tab.transactions": "பரிவர்த்தனைகள்",
     "app.title": "செலவு கண்காணிப்பு",
     "logout": "வெளியேறு",
     "tab.home": "முகப்பு",
