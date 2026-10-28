@@ -9,6 +9,7 @@ import {
   Paper,
 } from "@mui/material";
 import { TransactionContext } from "../context/TransactionContext";
+import { LanguageContext } from "../context/LanguageContext";
 import { incomeCategories, expenseCategories } from "../constants/categories";
 
 const initial = {
@@ -21,6 +22,7 @@ const initial = {
 export default function Form() {
   const [data, setData] = useState(initial);
   const { addTransaction } = useContext(TransactionContext);
+  const { t, tc } = useContext(LanguageContext);
 
   const categories = data.type === "Income" ? incomeCategories : expenseCategories;
 
@@ -36,37 +38,37 @@ export default function Form() {
   return (
     <Paper sx={{ p: 2, mb: 2 }}>
       <Typography variant="h6" gutterBottom>
-        Add Transaction
+        {t("form.title")}
       </Typography>
       <Grid container spacing={2}>
         <Grid size={6}>
-          <TextField select fullWidth label="Type" name="type"
+          <TextField select fullWidth label={t("form.type")} name="type"
             value={data.type}
             onChange={(e) => setData({ ...data, type: e.target.value, category: "" })}>
-            <MenuItem value="Income">Income</MenuItem>
-            <MenuItem value="Expense">Expense</MenuItem>
+            <MenuItem value="Income">{t("type.Income")}</MenuItem>
+            <MenuItem value="Expense">{t("type.Expense")}</MenuItem>
           </TextField>
         </Grid>
         <Grid size={6}>
-          <TextField select fullWidth label="Category" name="category"
+          <TextField select fullWidth label={t("form.category")} name="category"
             value={data.category} onChange={handleChange}>
             {categories.map((c) => (
-              <MenuItem key={c} value={c}>{c}</MenuItem>
+              <MenuItem key={c} value={c}>{tc(c)}</MenuItem>
             ))}
           </TextField>
         </Grid>
         <Grid size={6}>
-          <TextField fullWidth type="number" label="Amount" name="amount"
+          <TextField fullWidth type="number" label={t("form.amount")} name="amount"
             value={data.amount} onChange={handleChange} />
         </Grid>
         <Grid size={6}>
-          <TextField fullWidth type="date" label="Date" name="date"
+          <TextField fullWidth type="date" label={t("form.date")} name="date"
             value={data.date} onChange={handleChange}
             slotProps={{ inputLabel: { shrink: true } }} />
         </Grid>
         <Grid size={12}>
           <Button fullWidth variant="contained" onClick={handleSubmit}>
-            Create
+            {t("form.create")}
           </Button>
         </Grid>
       </Grid>
