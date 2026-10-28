@@ -17,28 +17,9 @@ export default function App() {
   const { user, logOut } = useContext(AuthContext);
   const [page, setPage] = useState("home");
 
-  const income = transactions
-    .filter((t) => t.type === "Income")
-    .reduce((s, t) => s + t.amount, 0);
   const expense = transactions
     .filter((t) => t.type === "Expense")
     .reduce((s, t) => s + t.amount, 0);
-  const spentPct = income > 0 ? Math.round((expense / income) * 100) : 0;
-  const barColor =
-    spentPct >= 100 ? "error.main" : spentPct >= 80 ? "warning.main" : "success.main";
-  const fillPct = Math.min(spentPct, 100);
-  const amountLabel = `₹${expense}`;
-
-  const labelSx = {
-    position: "absolute",
-    inset: 0,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: 14,
-    whiteSpace: "nowrap",
-  };
 
   return (
     <>
@@ -71,61 +52,23 @@ export default function App() {
           <>
             <Paper
               sx={{
-                p: 3, mb: 2, textAlign: "center", color: "white",
+                p: 3, mb: 2, color: "white",
                 background: "linear-gradient(135deg,#556b2f,#8a9a5b)",
+                display: "flex",
+                textAlign: "center",
               }}
             >
-              <Typography variant="subtitle1">Total Balance</Typography>
-              <Typography variant="h3" fontWeight="bold">₹{balance}</Typography>
-            </Paper>
-
-            <Paper sx={{ p: 2, mb: 2 }}>
-              <Typography fontWeight="bold" sx={{ mb: 1 }}>
-                Spent so far
-              </Typography>
-              <Box
-                sx={{
-                  position: "relative",
-                  height: 28,
-                  borderRadius: 14,
-                  overflow: "hidden",
-                  bgcolor: "action.hover",
-                }}
-              >
-                <Box sx={{ ...labelSx, color: "text.primary" }}>{amountLabel}</Box>
-                {fillPct > 0 && (
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: 0,
-                      bottom: 0,
-                      left: 0,
-                      width: `${fillPct}%`,
-                      bgcolor: barColor,
-                      overflow: "hidden",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        ...labelSx,
-                        right: "auto",
-                        width: `${(100 / fillPct) * 100}%`,
-                        color: "#ffffff",
-                      }}
-                    >
-                      {amountLabel}
-                    </Box>
-                  </Box>
-                )}
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="subtitle1">Total Balance</Typography>
+                <Typography variant="h4" fontWeight="bold">₹{balance}</Typography>
               </Box>
-              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                of ₹{income} income
-              </Typography>
-              {income === 0 && expense > 0 && (
-                <Typography variant="body2" color="error">
-                  Add some income to see how much of it you've spent.
-                </Typography>
-              )}
+
+              <Box sx={{ width: "1px", bgcolor: "rgba(255,255,255,0.5)", mx: 1 }} />
+
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="subtitle1">Spent</Typography>
+                <Typography variant="h4" fontWeight="bold">₹{expense}</Typography>
+              </Box>
             </Paper>
 
             <VoiceInput />
